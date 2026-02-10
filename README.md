@@ -65,7 +65,15 @@ This project is built with:
 
 This tool integrates with Google Docs to save discovery data without requiring a database or paid services. It can also generate professional PDF reports with DEPT® watermarking.
 
-### Setup
+### Setup for GitHub Pages Deployment
+
+⚠️ **Deploying to GitHub Pages?** See [GITHUB_PAGES_API_SETUP.md](./GITHUB_PAGES_API_SETUP.md) for detailed instructions on:
+- What API keys are needed
+- Where to add them (GitHub repository secrets)
+- How to configure the deployment workflow
+- Security considerations for client-side API keys
+
+### Local Development Setup
 
 See [GOOGLE_DOCS_SETUP.md](./GOOGLE_DOCS_SETUP.md) for detailed setup instructions.
 
