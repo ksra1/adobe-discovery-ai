@@ -20,15 +20,19 @@ Once configured, the workflow will:
 - Deploy the static files to GitHub Pages
 - Make the site available at: https://ksra1.github.io/adobe-discovery-ai/
 
+⚠️ **Important**: The basic site will work, but to enable Google Docs integration and other API-based features, you need to configure API keys. See [GITHUB_PAGES_API_SETUP.md](./GITHUB_PAGES_API_SETUP.md) for complete instructions.
+
 ## Workflow Details
 
 The deployment workflow (`.github/workflows/deploy.yml`) will:
 1. Checkout the code
 2. Set up Node.js
 3. Install dependencies
-4. Build the project with `npm run build`
+4. Build the project with `npm run build` (including environment variables from GitHub Secrets)
 5. Upload the `dist` folder as a Pages artifact
 6. Deploy to GitHub Pages
+
+**Note**: API keys are injected during the build step from GitHub repository secrets. Without configuring these secrets, API-dependent features won't work in production. See [GITHUB_PAGES_API_SETUP.md](./GITHUB_PAGES_API_SETUP.md) for setup instructions.
 
 ## Troubleshooting
 

@@ -52,12 +52,18 @@ export function WizardShell() {
           </div>
           <h1 className="text-3xl font-bold text-foreground">Submission Complete</h1>
           <p className="text-muted-foreground">
-            Discovery data for <strong className="text-foreground">{formData.generalInfo.companyName || 'the client'}</strong> has been recorded.
-            Backend integrations (Google Sheets & AI report) will be connected in a future update.
+            Discovery data for <strong className="text-foreground">{formData.generalInfo.companyName || 'the client'}</strong> has been successfully written to Google Docs.
+            You can now generate a PDF report with the DEPT® watermark.
           </p>
-          <Button onClick={resetForm} variant="outline" className="gap-2 border-[#ff4901] text-[#ff4901] hover:bg-[#ff4901] hover:text-white transition-colors">
-            <RotateCcw className="w-4 h-4" /> Start New Discovery
-          </Button>
+          <div className="flex flex-col gap-3 items-center mt-6">
+            <Button 
+              onClick={resetForm} 
+              variant="outline" 
+              className="gap-2 border-[#ff4901] text-[#ff4901] hover:bg-[#ff4901] hover:text-white transition-colors"
+            >
+              <RotateCcw className="w-4 h-4" /> Start New Discovery
+            </Button>
+          </div>
         </div>
       </div>
     );
