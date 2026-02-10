@@ -4,6 +4,23 @@
 
 **Yes!** The Adobe Discovery AI tool works on GitHub Pages, including the Google Docs and PDF generation features. However, you need to properly configure API keys for the features to work in production.
 
+## 🎯 Quick Decision Tree
+
+```
+Do you want to deploy to GitHub Pages?
+│
+├─ YES → Need Google Docs integration?
+│   │
+│   ├─ YES → Follow this guide to set up API keys ✓
+│   │        (Takes ~5 minutes, it's free)
+│   │
+│   └─ NO → Just deploy! PDF generation works without any setup
+│            See GITHUB_PAGES_SETUP.md
+│
+└─ NO → Running locally?
+         See GOOGLE_DOCS_SETUP.md for local .env setup
+```
+
 ## ⚠️ Important Security Notice
 
 **API keys embedded in client-side applications (like this one) are visible to anyone who views the page source or network requests.** This is a limitation of static sites like GitHub Pages.

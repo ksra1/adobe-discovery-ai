@@ -1,5 +1,11 @@
 # Adobe Experience Cloud Discovery Tool by DEPT®
 
+## 🚀 Quick Start for GitHub Pages
+
+**Deploying to GitHub Pages?** → See [QUICKSTART_API.md](./QUICKSTART_API.md) for a 5-minute setup guide!
+
+Need API keys? They're free and easy to set up. The app works without them too (PDF generation always works).
+
 ## Project info
 
 This tool is designed to facilitate the discovery process for Adobe Experience Cloud implementations.
