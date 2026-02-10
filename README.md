@@ -1,8 +1,22 @@
 # Adobe Experience Cloud Discovery Tool by DEPT®
 
+## 🚀 Quick Start for GitHub Pages
+
+**Deploying to GitHub Pages?** → See [QUICKSTART_API.md](./QUICKSTART_API.md) for a 5-minute setup guide!
+
+Need API keys? They're free and easy to set up. The app works without them too (PDF generation always works).
+
 ## Project info
 
 This tool is designed to facilitate the discovery process for Adobe Experience Cloud implementations.
+
+## Features
+
+- **Multi-section Discovery Form**: Comprehensive questionnaire covering all Adobe Experience Cloud products
+- **Google Docs Integration**: Automatically save discovery data to Google Docs (no database required!)
+- **PDF Generation**: Generate professional PDF reports with DEPT® watermark
+- **LLM-Enhanced Reports**: Optional AI-powered content formatting for polished outputs
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
 
 ## How can I edit this code?
 
@@ -49,6 +63,36 @@ This project is built with:
 - React
 - shadcn-ui
 - Tailwind CSS
+- Google Docs API (for data storage)
+- jsPDF (for PDF generation)
+- OpenAI API (optional, for enhanced content)
+
+## Google Docs & PDF Features
+
+This tool integrates with Google Docs to save discovery data without requiring a database or paid services. It can also generate professional PDF reports with DEPT® watermarking.
+
+### Setup for GitHub Pages Deployment
+
+⚠️ **Deploying to GitHub Pages?** See [GITHUB_PAGES_API_SETUP.md](./GITHUB_PAGES_API_SETUP.md) for detailed instructions on:
+- What API keys are needed
+- Where to add them (GitHub repository secrets)
+- How to configure the deployment workflow
+- Security considerations for client-side API keys
+
+### Local Development Setup
+
+See [GOOGLE_DOCS_SETUP.md](./GOOGLE_DOCS_SETUP.md) for detailed setup instructions.
+
+Quick start:
+1. Copy `.env.example` to `.env`
+2. Add your Google API credentials (optional for development)
+3. The tool works without API keys in development mode
+
+### Usage
+
+1. Complete the discovery form
+2. Click "Submit to Google Docs" to save data
+3. Click "Generate PDF" to download a formatted report with DEPT® watermark
 
 ## How can I deploy this project?
 
