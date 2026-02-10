@@ -55,8 +55,11 @@ describe('PDFGenerationService', () => {
   });
 
   it('should handle errors gracefully', async () => {
-    // Test with invalid data
-    const invalidData = null as any;
+    // Test with incomplete data structure
+    const invalidData = {
+      ...DEFAULT_FORM_DATA,
+      generalInfo: undefined,
+    } as any;
     
     const result = await service.generatePDF(invalidData);
     

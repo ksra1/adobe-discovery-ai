@@ -97,7 +97,9 @@ export function ReviewSubmit() {
       const result = await pdfGenerationService.generatePDF(formData);
 
       if (result.success && result.blob) {
-        const filename = `adobe-discovery-${formData.generalInfo.companyName || 'report'}-${new Date().toISOString().split('T')[0]}.pdf`;
+        const companyName = formData.generalInfo.companyName || 'report';
+        const date = new Date().toISOString().split('T')[0];
+        const filename = `adobe-discovery-${companyName}-${date}.pdf`;
         pdfGenerationService.downloadPDF(result.blob, filename);
         
         toast({

@@ -5,6 +5,10 @@ interface PDFGenerationConfig {
   openaiApiKey?: string;
 }
 
+// Constants for content formatting
+const MIN_HEADER_LENGTH = 5;
+const MAX_HEADER_LENGTH = 60;
+
 /**
  * Service for generating PDFs with LLM-enhanced formatting
  * Includes DEPT watermark on all pages
@@ -114,6 +118,8 @@ export class PDFGenerationService {
 
   /**
    * Generate a PDF from discovery data
+   * @param data Discovery form data to include in the PDF
+   * @param documentContent Optional pre-formatted content (reserved for future use with Google Docs integration)
    */
   async generatePDF(
     data: DiscoveryFormData,
@@ -176,7 +182,7 @@ export class PDFGenerationService {
         const line = lines[i];
         
         // Check if line is a header (all caps or ends with ':')
-        if (line === line.toUpperCase() && line.length > 5 && line.length < 60) {
+        if (line === line.toUpperCase() && line.length > MIN_HEADER_LENGTH && line.length < MAX_HEADER_LENGTH) {
           doc.setFont('helvetica', 'bold');
           doc.setFontSize(12);
           doc.setTextColor(255, 73, 1);
