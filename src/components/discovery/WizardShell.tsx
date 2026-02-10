@@ -69,7 +69,7 @@ export function WizardShell() {
       <header className="border-b border-border bg-card sticky top-0 z-30">
         <div className="max-w-5xl mx-auto px-4 py-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <img src="/images/logo-dept.svg" className="h-8 w-auto" alt="DEPT®" />
+            <img src={`${import.meta.env.BASE_URL}images/logo-dept.svg`} className="h-8 w-auto" alt="DEPT®" />
           </div>
           <span className="text-xs text-muted-foreground hidden sm:block">
             <span className="text-[#ff4901] font-semibold">Adobe Experience Cloud</span> Discovery

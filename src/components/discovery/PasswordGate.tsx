@@ -28,7 +28,7 @@ export function PasswordGate({ onAuthenticated }: PasswordGateProps) {
       <div className="w-full max-w-xl space-y-12 text-center px-4">
         <div className="space-y-12">
           <div className="flex justify-center">
-            <img src="/images/logo-dept.svg" className="h-24 md:h-32 w-auto" alt="DEPT®" />
+            <img src={`${import.meta.env.BASE_URL}images/logo-dept.svg`} className="h-24 md:h-32 w-auto" alt="DEPT®" />
           </div>
           
           <div className="space-y-2 leading-none tracking-tighter flex flex-col items-center cursor-default select-none">
