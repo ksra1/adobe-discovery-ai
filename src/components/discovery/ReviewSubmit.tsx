@@ -1,7 +1,11 @@
 import { useDiscovery } from '@/contexts/DiscoveryContext';
 import { SECTIONS } from '@/types/discovery';
 import { Button } from '@/components/ui/button';
-import { Send } from 'lucide-react';
+import { Send, FileText, Download, Loader2 } from 'lucide-react';
+import { googleDocsService } from '@/services/googleDocsService';
+import { pdfGenerationService } from '@/services/pdfGenerationService';
+import { useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
 
 function renderValue(val: unknown): string {
   if (Array.isArray(val)) return val.length > 0 ? val.join(', ') : '—';
@@ -37,10 +41,86 @@ function SectionSummary({ title, data, onEdit }: { title: string; data: Record<s
 
 export function ReviewSubmit() {
   const { formData, setCurrentSection, setIsSubmitted } = useDiscovery();
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [googleDocsUrl, setGoogleDocsUrl] = useState<string | null>(null);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
-  const handleSubmit = () => {
-    console.log('Discovery form data:', JSON.stringify(formData, null, 2));
-    setIsSubmitted(true);
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    
+    try {
+      // Write to Google Docs
+      toast({
+        title: 'Submitting...',
+        description: 'Writing discovery data to Google Docs...',
+      });
+
+      const result = await googleDocsService.writeToGoogleDocs(formData);
+
+      if (result.success && result.documentUrl) {
+        setGoogleDocsUrl(result.documentUrl);
+        toast({
+          title: 'Success!',
+          description: 'Discovery data has been written to Google Docs.',
+        });
+        console.log('Discovery form data:', JSON.stringify(formData, null, 2));
+        setIsSubmitted(true);
+      } else {
+        toast({
+          title: 'Error',
+          description: result.error || 'Failed to write to Google Docs.',
+          variant: 'destructive',
+        });
+      }
+    } catch (error) {
+      console.error('Submission error:', error);
+      toast({
+        title: 'Error',
+        description: 'An unexpected error occurred during submission.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleGeneratePDF = async () => {
+    setIsGeneratingPDF(true);
+    
+    try {
+      toast({
+        title: 'Generating PDF...',
+        description: 'Creating your discovery report with DEPT® watermark...',
+      });
+
+      const result = await pdfGenerationService.generatePDF(formData);
+
+      if (result.success && result.blob) {
+        const filename = `adobe-discovery-${formData.generalInfo.companyName || 'report'}-${new Date().toISOString().split('T')[0]}.pdf`;
+        pdfGenerationService.downloadPDF(result.blob, filename);
+        
+        toast({
+          title: 'PDF Generated!',
+          description: 'Your discovery report has been downloaded.',
+        });
+      } else {
+        toast({
+          title: 'Error',
+          description: result.error || 'Failed to generate PDF.',
+          variant: 'destructive',
+        });
+      }
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      toast({
+        title: 'Error',
+        description: 'An unexpected error occurred during PDF generation.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsGeneratingPDF(false);
+    }
   };
 
   return (
@@ -59,11 +139,59 @@ export function ReviewSubmit() {
         />
       ))}
 
-      <div className="flex justify-center pt-4">
-        <Button onClick={handleSubmit} size="lg" className="dept-gradient text-primary-foreground font-semibold gap-2 px-8">
-          <Send className="w-4 h-4" /> Submit Discovery
+      <div className="flex justify-center pt-4 gap-3">
+        <Button 
+          onClick={handleSubmit} 
+          size="lg" 
+          className="dept-gradient text-primary-foreground font-semibold gap-2 px-8"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" /> Submitting...
+            </>
+          ) : (
+            <>
+              <Send className="w-4 h-4" /> Submit to Google Docs
+            </>
+          )}
+        </Button>
+        
+        <Button 
+          onClick={handleGeneratePDF} 
+          size="lg" 
+          variant="outline"
+          className="border-[#ff4901] text-[#ff4901] hover:bg-[#ff4901] hover:text-white font-semibold gap-2 px-8"
+          disabled={isGeneratingPDF}
+        >
+          {isGeneratingPDF ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" /> Generating...
+            </>
+          ) : (
+            <>
+              <Download className="w-4 h-4" /> Generate PDF
+            </>
+          )}
         </Button>
       </div>
+      
+      {googleDocsUrl && (
+        <div className="mt-4 p-4 bg-muted/50 rounded-md border border-border">
+          <div className="flex items-center gap-2 text-sm">
+            <FileText className="w-4 h-4 text-primary" />
+            <span className="text-muted-foreground">Google Doc created:</span>
+            <a 
+              href={googleDocsUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-primary hover:underline font-medium"
+            >
+              View Document
+            </a>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
