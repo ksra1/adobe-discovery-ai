@@ -10,7 +10,7 @@ export function CampaignSection() {
     <SectionWrapper title="Adobe Campaign (Classic / Standard / v8)">
       <FieldGroup title="Licensing & Version">
         <RadioField label="Which Campaign flavor?" value={d.flavor} onChange={v => set({ flavor: v })} options={['Campaign Classic v7', 'Campaign v8', 'Campaign Standard', 'Not sure', 'Not using Adobe Campaign']} />
-        <RadioField label="Usage status" value={d.usageStatus} onChange={v => set({ usageStatus: v })} options={['Not purchased', 'Purchased not implemented', 'In implementation', 'In production', 'Being sunset']} />
+        <RadioField label="Usage status" value={d.usageStatus} onChange={v => set({ usageStatus: v })} options={['Not purchased', 'Purchased (Not Implemented)', 'Implementation In-progress', 'In production', 'Being sunset']} />
         <TextField label="Regions / BUs using Campaign" value={d.regions} onChange={v => set({ regions: v })} placeholder="e.g., NA, EMEA, APAC..." />
       </FieldGroup>
 

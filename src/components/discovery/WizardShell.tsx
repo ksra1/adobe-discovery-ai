@@ -55,7 +55,7 @@ export function WizardShell() {
             Discovery data for <strong className="text-foreground">{formData.generalInfo.companyName || 'the client'}</strong> has been recorded.
             Backend integrations (Google Sheets & AI report) will be connected in a future update.
           </p>
-          <Button onClick={resetForm} variant="outline" className="gap-2">
+          <Button onClick={resetForm} variant="outline" className="gap-2 border-[#ff4901] text-[#ff4901] hover:bg-[#ff4901] hover:text-white transition-colors">
             <RotateCcw className="w-4 h-4" /> Start New Discovery
           </Button>
         </div>
@@ -67,15 +67,22 @@ export function WizardShell() {
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <header className="border-b border-border bg-card sticky top-0 z-30">
-        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="text-xl font-black tracking-tighter text-foreground">DEPT®</div>
+        <div className="max-w-5xl mx-auto px-4 py-2 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <img src="/images/logo-dept.svg" className="h-8 w-auto" alt="DEPT®" />
+          </div>
           <span className="text-xs text-muted-foreground hidden sm:block">
-            Adobe Experience Cloud Discovery
+            <span className="text-[#ff4901] font-semibold">Adobe Experience Cloud</span> Discovery
           </span>
         </div>
         <div className="max-w-5xl mx-auto px-4 pb-3">
           <div className="flex items-center gap-3">
-            <Progress value={progress} className="flex-1 h-1.5" />
+            <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-[#ff4901] transition-all duration-500 ease-in-out"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
             <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">
               {currentSection + 1} / {TOTAL_STEPS}
             </span>
@@ -93,7 +100,7 @@ export function WizardShell() {
               className={cn(
                 'px-3 py-1.5 text-xs rounded-md whitespace-nowrap transition-colors font-medium',
                 i === currentSection
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-[#ff4901] text-white'
                   : 'text-muted-foreground hover:bg-muted hover:text-foreground'
               )}
             >
@@ -105,7 +112,7 @@ export function WizardShell() {
             className={cn(
               'px-3 py-1.5 text-xs rounded-md whitespace-nowrap transition-colors font-medium',
               isReview
-                ? 'bg-primary text-primary-foreground'
+                ? 'bg-[#ff4901] text-white'
                 : 'text-muted-foreground hover:bg-muted hover:text-foreground'
             )}
           >
@@ -126,14 +133,21 @@ export function WizardShell() {
             variant="outline"
             onClick={() => setCurrentSection(Math.max(0, currentSection - 1))}
             disabled={currentSection === 0}
-            className="gap-1"
+            className="gap-1 border-[#ff4901] text-[#ff4901] hover:bg-[#ff4901] hover:text-white transition-colors"
           >
             <ChevronLeft className="w-4 h-4" /> Previous
           </Button>
-          {isReview ? null : (
+          {isReview ? (
+            <Button
+              onClick={() => { /* Handle final submission */ }}
+              className="bg-[#ff4901] text-white font-bold hover:bg-[#ff4901]/90 transition-colors px-8"
+            >
+              Final Submit <Send className="ml-2 h-4 w-4" />
+            </Button>
+          ) : (
             <Button
               onClick={() => setCurrentSection(currentSection + 1)}
-              className="gap-1 dept-gradient text-primary-foreground"
+              className="bg-[#ff4901] text-white font-bold hover:bg-[#ff4901]/90 transition-colors px-8"
             >
               {currentSection === SECTIONS.length - 1 ? 'Review' : 'Next'} <ChevronRight className="w-4 h-4" />
             </Button>

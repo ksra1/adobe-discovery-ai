@@ -27,7 +27,7 @@ const ADOPTION_PRODUCTS = [
 ];
 
 const ADOPTION_LEVELS = [
-  'Not purchased', 'Purchased not implemented', 'In implementation',
+  'Not purchased', 'Purchased (Not Implemented)', 'Implementation In-progress',
   'In production', 'Optimized',
 ];
 

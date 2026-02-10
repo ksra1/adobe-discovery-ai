@@ -9,7 +9,7 @@ export function TargetSection() {
   return (
     <SectionWrapper title="Adobe Target / Personalization">
       <FieldGroup title="License & Usage">
-        <RadioField label="License & usage status" value={d.licenseStatus} onChange={v => set({ licenseStatus: v })} options={['Not licensed', 'Licensed but unused', 'In implementation', 'In production']} />
+        <RadioField label="License & usage status" value={d.licenseStatus} onChange={v => set({ licenseStatus: v })} options={['Not licensed', 'Purchased (Not Implemented)', 'Implementation In-progress', 'In production']} />
         <MultiSelectField label="Primary use cases" selected={d.primaryUseCases} onChange={v => set({ primaryUseCases: v })} options={['A/B tests', 'Multivariate tests (MVT)', 'Recommendations', 'Automated personalization', 'Rules-based personalization']} />
       </FieldGroup>
 

@@ -25,17 +25,23 @@ export function PasswordGate({ onAuthenticated }: PasswordGateProps) {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="w-full max-w-sm space-y-8 text-center px-4">
-        <div className="space-y-3">
-          <div className="text-4xl font-black tracking-tighter text-foreground">
-            DEPT®
+      <div className="w-full max-w-xl space-y-12 text-center px-4">
+        <div className="space-y-12">
+          <div className="flex justify-center">
+            <img src="/images/logo-dept.svg" className="h-24 md:h-32 w-auto" alt="DEPT®" />
           </div>
-          <p className="text-sm text-muted-foreground">
-            Adobe Experience Cloud Discovery Tool
-          </p>
+          
+          <div className="space-y-2 leading-none tracking-tighter flex flex-col items-center cursor-default select-none">
+            <div className="font-black text-2xl sm:text-4xl md:text-5xl text-foreground uppercase text-center whitespace-nowrap">
+              ADOBE EXPERIENCE CLOUD
+            </div>
+            <div className="font-black text-2xl sm:text-4xl md:text-5xl text-[#ff4901] uppercase text-center whitespace-nowrap">
+              DISCOVERY TOOL
+            </div>
+          </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="mx-auto max-w-sm space-y-4">
           <div className="relative">
             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
@@ -50,8 +56,8 @@ export function PasswordGate({ onAuthenticated }: PasswordGateProps) {
           {error && (
             <p className="text-sm text-destructive">Incorrect password. Please try again.</p>
           )}
-          <Button type="submit" className="w-full dept-gradient text-primary-foreground font-semibold">
-            Access Tool
+          <Button type="submit" className="w-full dept-gradient text-[#ff4901] font-semibold hover:bg-[#ff4901] hover:text-white transition-colors">
+            Launch
           </Button>
         </form>
 

@@ -10,7 +10,7 @@ export function AEPSection() {
     <SectionWrapper title="Adobe Experience Platform / CDP (RTCDP)">
       <FieldGroup title="Licensing & Scope">
         <RadioField label="RTCDP license type" value={d.rtcdpLicenseType} onChange={v => set({ rtcdpLicenseType: v })} options={['B2C', 'B2B', 'B2P', 'Standard', 'Not sure', 'Not licensed']} />
-        <RadioField label="AEP usage status" value={d.usageStatus} onChange={v => set({ usageStatus: v })} options={['Not purchased', 'Purchased not implemented', 'In implementation', 'In production', 'Advanced / optimized']} />
+        <RadioField label="AEP usage status" value={d.usageStatus} onChange={v => set({ usageStatus: v })} options={['Not purchased', 'Purchased (Not Implemented)', 'Implementation In-progress', 'In production', 'Advanced / optimized']} />
       </FieldGroup>
 
       <FieldGroup title="Data & Identity">

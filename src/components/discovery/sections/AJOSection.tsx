@@ -9,7 +9,7 @@ export function AJOSection() {
   return (
     <SectionWrapper title="Adobe Journey Optimizer (AJO)">
       <FieldGroup title="Adoption & Channels">
-        <RadioField label="AJO status" value={d.status} onChange={v => set({ status: v })} options={['Not licensed', 'Licensed not started', 'In implementation', 'In production', 'Advanced']} />
+        <RadioField label="AJO status" value={d.status} onChange={v => set({ status: v })} options={['Not licensed', 'Purchased (Not Implemented)', 'Implementation In-progress', 'In production', 'Advanced']} />
         <MultiSelectField label="Channels used with AJO" selected={d.channelsUsed} onChange={v => set({ channelsUsed: v })} options={['Email', 'Push', 'In-app', 'SMS', 'On-site messages', 'Other']} />
       </FieldGroup>
 
