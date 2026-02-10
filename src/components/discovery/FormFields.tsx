@@ -29,7 +29,6 @@ const ACRONYM_DEFS: Record<string, string> = {
   'NPS': 'Net Promoter Score - Measures customer loyalty and likelihood to recommend',
   'CSAT': 'Customer Satisfaction Score - Measures satisfaction with a specific interaction or product',
   'MQLs': 'Marketing Qualified Leads - Leads identified as more likely to become customers',
-  'MQLs': 'Marketing Qualified Leads',
   'SQL': 'Sales Qualified Lead',
   'SQLs': 'Sales Qualified Leads',
   'LTV': 'Lifetime Value',
