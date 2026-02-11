@@ -30,18 +30,22 @@ const MENU_ITEMS: { view: View; icon: typeof FilePlus; title: string; descriptio
 export function MainMenu({ onNavigate }: MainMenuProps) {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4">
-      <div className="w-full max-w-4xl space-y-10 text-center">
-        <div className="space-y-6">
-          <img
-            src={`${import.meta.env.BASE_URL}images/logo-dept.svg`}
-            className="h-16 w-auto mx-auto"
-            alt="DEPT®"
-          />
-          <div className="space-y-1">
-            <h1 className="text-3xl font-black tracking-tight text-foreground uppercase">
-              Adobe Experience Cloud
-            </h1>
-            <p className="text-lg font-semibold text-primary">Discovery Tool</p>
+      <div className="w-full max-w-4xl space-y-12 text-center">
+        <div className="space-y-12">
+          <div className="flex justify-center">
+            <img
+              src={`${import.meta.env.BASE_URL}images/logo-dept.svg`}
+              className="h-24 md:h-32 w-auto"
+              alt="DEPT®"
+            />
+          </div>
+          <div className="space-y-2 leading-none tracking-tighter flex flex-col items-center cursor-default select-none">
+            <div className="font-black text-2xl sm:text-4xl md:text-5xl text-foreground uppercase text-center whitespace-nowrap">
+              ADOBE EXPERIENCE CLOUD
+            </div>
+            <div className="font-black text-2xl sm:text-4xl md:text-5xl text-[#ff4901] uppercase text-center whitespace-nowrap">
+              DISCOVERY TOOL
+            </div>
           </div>
         </div>
 
