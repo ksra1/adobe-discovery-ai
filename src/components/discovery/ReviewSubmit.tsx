@@ -1,8 +1,7 @@
 import { useDiscovery } from '@/contexts/DiscoveryContext';
 import { SECTIONS } from '@/types/discovery';
 import { Button } from '@/components/ui/button';
-import { Send, FileText, Download, Loader2 } from 'lucide-react';
-import { googleDocsService } from '@/services/googleDocsService';
+import { Download, Loader2 } from 'lucide-react';
 import { pdfGenerationService } from '@/services/pdfGenerationService';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -45,45 +44,6 @@ export function ReviewSubmit() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [googleDocsUrl, setGoogleDocsUrl] = useState<string | null>(null);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-
-  const handleSubmit = async () => {
-    setIsSubmitting(true);
-    
-    try {
-      // Write to Google Docs
-      toast({
-        title: 'Submitting...',
-        description: 'Writing discovery data to Google Docs...',
-      });
-
-      const result = await googleDocsService.writeToGoogleDocs(formData);
-
-      if (result.success && result.documentUrl) {
-        setGoogleDocsUrl(result.documentUrl);
-        toast({
-          title: 'Success!',
-          description: 'Discovery data has been written to Google Docs.',
-        });
-        console.log('Discovery form data:', JSON.stringify(formData, null, 2));
-        setIsSubmitted(true);
-      } else {
-        toast({
-          title: 'Error',
-          description: result.error || 'Failed to write to Google Docs.',
-          variant: 'destructive',
-        });
-      }
-    } catch (error) {
-      console.error('Submission error:', error);
-      toast({
-        title: 'Error',
-        description: 'An unexpected error occurred during submission.',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   const handleGeneratePDF = async () => {
     setIsGeneratingPDF(true);
@@ -129,7 +89,7 @@ export function ReviewSubmit() {
     <div className="space-y-6">
       <div className="space-y-1">
         <h2 className="text-2xl font-bold text-foreground">Review & Submit</h2>
-        <p className="text-sm text-muted-foreground">Review all responses before submitting. Click Edit to modify any section.</p>
+        <p className="text-sm text-muted-foreground">Review all responses and generate your report.</p>
       </div>
 
       {SECTIONS.map((section, index) => (
@@ -143,23 +103,6 @@ export function ReviewSubmit() {
 
       <div className="flex justify-center pt-4 gap-3">
         <Button 
-          onClick={handleSubmit} 
-          size="lg" 
-          className="dept-gradient text-primary-foreground font-semibold gap-2 px-8"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin" /> Submitting...
-            </>
-          ) : (
-            <>
-              <Send className="w-4 h-4" /> Submit to Google Docs
-            </>
-          )}
-        </Button>
-        
-        <Button 
           onClick={handleGeneratePDF} 
           size="lg" 
           variant="outline"
@@ -172,28 +115,11 @@ export function ReviewSubmit() {
             </>
           ) : (
             <>
-              <Download className="w-4 h-4" /> Generate PDF
+              <Download className="w-4 h-4" /> Generate PDF Report
             </>
           )}
         </Button>
       </div>
-      
-      {googleDocsUrl && (
-        <div className="mt-4 p-4 bg-muted/50 rounded-md border border-border">
-          <div className="flex items-center gap-2 text-sm">
-            <FileText className="w-4 h-4 text-primary" />
-            <span className="text-muted-foreground">Google Doc created:</span>
-            <a 
-              href={googleDocsUrl} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-primary hover:underline font-medium"
-            >
-              View Document
-            </a>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
