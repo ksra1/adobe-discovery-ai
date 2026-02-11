@@ -60,7 +60,7 @@ export function ReviewSubmit() {
       ))}
 
       <div className="flex justify-center pt-4">
-        <Button onClick={handleSubmit} size="lg" className="dept-gradient text-primary-foreground font-semibold gap-2 px-8">
+        <Button onClick={handleSubmit} size="lg" className="bg-primary text-primary-foreground font-semibold gap-2 px-8 hover:bg-primary/90">
           <Send className="w-4 h-4" /> Submit Discovery
         </Button>
       </div>
