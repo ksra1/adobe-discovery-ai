@@ -93,6 +93,12 @@ export class GoogleDocsService {
 
       const formattedContent = this.formatDiscoveryData(data);
       
+      // LOG TO CONSOLE: This is the primary way to "see" the data in current setup
+      console.log('=== DISCOVERY DATA SUBMISSION ===');
+      console.log('Client:', data.generalInfo.companyName || 'Unknown');
+      console.log('Report Content:\n', formattedContent);
+      console.log('=================================');
+      
       // In production environment, this would:
       // 1. Create a new Google Doc or update an existing one
       // 2. Use the Google Docs API to write the formatted content

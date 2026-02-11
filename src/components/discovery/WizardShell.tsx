@@ -145,7 +145,12 @@ export function WizardShell() {
           </Button>
           {isReview ? (
             <Button
-              onClick={() => { /* Handle final submission */ }}
+              onClick={async () => {
+                const result = await googleDocsService.writeToGoogleDocs(formData);
+                if (result.success) {
+                  setIsSubmitted(true);
+                }
+              }}
               className="bg-[#ff4901] text-white font-bold hover:bg-[#ff4901]/90 transition-colors px-8"
             >
               Final Submit <Send className="ml-2 h-4 w-4" />
