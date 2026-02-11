@@ -1,9 +1,8 @@
 import React from 'react';
 import { useDiscovery } from '@/contexts/DiscoveryContext';
 import { SECTIONS } from '@/types/discovery';
-import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight, Send, RotateCcw } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Send, RotateCcw, ArrowLeft } from 'lucide-react';
 import { GeneralInfoSection } from './sections/GeneralInfo';
 import { ProblemsGoalsSection } from './sections/ProblemsGoals';
 import { AEMSection } from './sections/AEMSection';
@@ -18,6 +17,8 @@ import { WorkfrontSection } from './sections/WorkfrontSection';
 import { OtherStackSection } from './sections/OtherStackSection';
 import { ReviewSubmit } from './ReviewSubmit';
 import { cn } from '@/lib/utils';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
 const SECTION_COMPONENTS = [
   GeneralInfoSection,
@@ -34,14 +35,32 @@ const SECTION_COMPONENTS = [
   OtherStackSection,
 ];
 
-const TOTAL_STEPS = SECTIONS.length + 1; // sections + review
+const TOTAL_STEPS = SECTIONS.length + 1;
 
-export function WizardShell() {
-  const { currentSection, setCurrentSection, isSubmitted, formData, resetForm } = useDiscovery();
+interface WizardShellProps {
+  onBack?: () => void;
+}
+
+export function WizardShell({ onBack }: WizardShellProps) {
+  const { currentSection, setCurrentSection, isSubmitted, formData, resetForm, setIsSubmitted } = useDiscovery();
   const isReview = currentSection === SECTIONS.length;
   const progress = ((currentSection + 1) / TOTAL_STEPS) * 100;
 
   const CurrentComponent = isReview ? ReviewSubmit : SECTION_COMPONENTS[currentSection];
+
+  const handleFinalSubmit = async () => {
+    try {
+      await addDoc(collection(db, 'entries'), {
+        ...formData,
+        companyName: formData.generalInfo.companyName,
+        submittedAt: new Date().toISOString(),
+      });
+      setIsSubmitted(true);
+    } catch (err) {
+      console.error('Error writing to Firestore:', err);
+      alert('Failed to submit. Please check your Firestore configuration.');
+    }
+  };
 
   if (isSubmitted) {
     return (
@@ -52,12 +71,18 @@ export function WizardShell() {
           </div>
           <h1 className="text-3xl font-bold text-foreground">Submission Complete</h1>
           <p className="text-muted-foreground">
-            Discovery data for <strong className="text-foreground">{formData.generalInfo.companyName || 'the client'}</strong> has been recorded.
-            Backend integrations (Google Sheets & AI report) will be connected in a future update.
+            Discovery data for <strong className="text-foreground">{formData.generalInfo.companyName || 'the client'}</strong> has been saved to Firestore.
           </p>
-          <Button onClick={resetForm} variant="outline" className="gap-2 border-[#ff4901] text-[#ff4901] hover:bg-[#ff4901] hover:text-white transition-colors">
-            <RotateCcw className="w-4 h-4" /> Start New Discovery
-          </Button>
+          <div className="flex gap-3 justify-center">
+            <Button onClick={resetForm} variant="outline" className="gap-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors">
+              <RotateCcw className="w-4 h-4" /> Start New Discovery
+            </Button>
+            {onBack && (
+              <Button onClick={onBack} variant="outline" className="gap-2 border-border text-muted-foreground hover:text-foreground">
+                <ArrowLeft className="w-4 h-4" /> Back to Menu
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -65,21 +90,25 @@ export function WizardShell() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
       <header className="border-b border-border bg-card sticky top-0 z-30">
         <div className="max-w-5xl mx-auto px-4 py-2 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
+            {onBack && (
+              <Button variant="ghost" size="sm" onClick={onBack} className="gap-1 text-muted-foreground hover:text-foreground">
+                <ArrowLeft className="w-4 h-4" /> Menu
+              </Button>
+            )}
             <img src={`${import.meta.env.BASE_URL}images/logo-dept.svg`} className="h-8 w-auto" alt="DEPT®" />
           </div>
           <span className="text-xs text-muted-foreground hidden sm:block">
-            <span className="text-[#ff4901] font-semibold">Adobe Experience Cloud</span> Discovery
+            <span className="text-primary font-semibold">Adobe Experience Cloud</span> Discovery
           </span>
         </div>
         <div className="max-w-5xl mx-auto px-4 pb-3">
           <div className="flex items-center gap-3">
             <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
-              <div 
-                className="h-full bg-[#ff4901] transition-all duration-500 ease-in-out"
+              <div
+                className="h-full bg-primary transition-all duration-500 ease-in-out"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -90,7 +119,6 @@ export function WizardShell() {
         </div>
       </header>
 
-      {/* Section nav pills */}
       <div className="border-b border-border bg-card/50 overflow-x-auto">
         <div className="max-w-5xl mx-auto px-4 py-2 flex gap-1">
           {SECTIONS.map((s, i) => (
@@ -100,7 +128,7 @@ export function WizardShell() {
               className={cn(
                 'px-3 py-1.5 text-xs rounded-md whitespace-nowrap transition-colors font-medium',
                 i === currentSection
-                  ? 'bg-[#ff4901] text-white'
+                  ? 'bg-primary text-primary-foreground'
                   : 'text-muted-foreground hover:bg-muted hover:text-foreground'
               )}
             >
@@ -112,7 +140,7 @@ export function WizardShell() {
             className={cn(
               'px-3 py-1.5 text-xs rounded-md whitespace-nowrap transition-colors font-medium',
               isReview
-                ? 'bg-[#ff4901] text-white'
+                ? 'bg-primary text-primary-foreground'
                 : 'text-muted-foreground hover:bg-muted hover:text-foreground'
             )}
           >
@@ -121,33 +149,31 @@ export function WizardShell() {
         </div>
       </div>
 
-      {/* Main content */}
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8">
         <CurrentComponent />
       </main>
 
-      {/* Footer nav */}
       <footer className="border-t border-border bg-card sticky bottom-0 z-30">
         <div className="max-w-5xl mx-auto px-4 py-3 flex justify-between">
           <Button
             variant="outline"
             onClick={() => setCurrentSection(Math.max(0, currentSection - 1))}
             disabled={currentSection === 0}
-            className="gap-1 border-[#ff4901] text-[#ff4901] hover:bg-[#ff4901] hover:text-white transition-colors"
+            className="gap-1 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
           >
             <ChevronLeft className="w-4 h-4" /> Previous
           </Button>
           {isReview ? (
             <Button
-              onClick={() => { /* Handle final submission */ }}
-              className="bg-[#ff4901] text-white font-bold hover:bg-[#ff4901]/90 transition-colors px-8"
+              onClick={handleFinalSubmit}
+              className="bg-primary text-primary-foreground font-bold hover:bg-primary/90 transition-colors px-8"
             >
               Final Submit <Send className="ml-2 h-4 w-4" />
             </Button>
           ) : (
             <Button
               onClick={() => setCurrentSection(currentSection + 1)}
-              className="bg-[#ff4901] text-white font-bold hover:bg-[#ff4901]/90 transition-colors px-8"
+              className="bg-primary text-primary-foreground font-bold hover:bg-primary/90 transition-colors px-8"
             >
               {currentSection === SECTIONS.length - 1 ? 'Review' : 'Next'} <ChevronRight className="w-4 h-4" />
             </Button>
