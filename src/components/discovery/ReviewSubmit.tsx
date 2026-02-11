@@ -1,10 +1,7 @@
 import { useDiscovery } from '@/contexts/DiscoveryContext';
 import { SECTIONS } from '@/types/discovery';
 import { Button } from '@/components/ui/button';
-import { Download, Loader2 } from 'lucide-react';
-import { pdfGenerationService } from '@/services/pdfGenerationService';
-import { useState } from 'react';
-import { useToast } from '@/hooks/use-toast';
+import { Send } from 'lucide-react';
 
 function renderValue(val: unknown): string {
   if (Array.isArray(val)) return val.length > 0 ? val.join(', ') : '—';
@@ -40,56 +37,17 @@ function SectionSummary({ title, data, onEdit }: { title: string; data: Record<s
 
 export function ReviewSubmit() {
   const { formData, setCurrentSection, setIsSubmitted } = useDiscovery();
-  const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [googleDocsUrl, setGoogleDocsUrl] = useState<string | null>(null);
-  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
-  const handleGeneratePDF = async () => {
-    setIsGeneratingPDF(true);
-    
-    try {
-      toast({
-        title: 'Generating PDF...',
-        description: 'Creating your discovery report with DEPT® watermark...',
-      });
-
-      const result = await pdfGenerationService.generatePDF(formData);
-
-      if (result.success && result.blob) {
-        const companyName = formData.generalInfo.companyName || 'report';
-        const date = new Date().toISOString().split('T')[0];
-        const filename = `adobe-discovery-${companyName}-${date}.pdf`;
-        pdfGenerationService.downloadPDF(result.blob, filename);
-        
-        toast({
-          title: 'PDF Generated!',
-          description: 'Your discovery report has been downloaded.',
-        });
-      } else {
-        toast({
-          title: 'Error',
-          description: result.error || 'Failed to generate PDF.',
-          variant: 'destructive',
-        });
-      }
-    } catch (error) {
-      console.error('PDF generation error:', error);
-      toast({
-        title: 'Error',
-        description: 'An unexpected error occurred during PDF generation.',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsGeneratingPDF(false);
-    }
+  const handleSubmit = () => {
+    console.log('Discovery form data:', JSON.stringify(formData, null, 2));
+    setIsSubmitted(true);
   };
 
   return (
     <div className="space-y-6">
       <div className="space-y-1">
         <h2 className="text-2xl font-bold text-foreground">Review & Submit</h2>
-        <p className="text-sm text-muted-foreground">Review all responses and generate your report.</p>
+        <p className="text-sm text-muted-foreground">Review all responses before submitting. Click Edit to modify any section.</p>
       </div>
 
       {SECTIONS.map((section, index) => (
@@ -101,23 +59,9 @@ export function ReviewSubmit() {
         />
       ))}
 
-      <div className="flex justify-center pt-4 gap-3">
-        <Button 
-          onClick={handleGeneratePDF} 
-          size="lg" 
-          variant="outline"
-          className="border-[#ff4901] text-[#ff4901] hover:bg-[#ff4901] hover:text-white font-semibold gap-2 px-8"
-          disabled={isGeneratingPDF}
-        >
-          {isGeneratingPDF ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin" /> Generating...
-            </>
-          ) : (
-            <>
-              <Download className="w-4 h-4" /> Generate PDF Report
-            </>
-          )}
+      <div className="flex justify-center pt-4">
+        <Button onClick={handleSubmit} size="lg" className="dept-gradient text-primary-foreground font-semibold gap-2 px-8">
+          <Send className="w-4 h-4" /> Submit Discovery
         </Button>
       </div>
     </div>

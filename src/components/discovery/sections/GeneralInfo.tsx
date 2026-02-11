@@ -26,7 +26,7 @@ export function GeneralInfoSection() {
   return (
     <SectionWrapper title="General Company Information">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <TextField label="Company Name" value={d.companyName} onChange={v => set({ companyName: v })} placeholder="Adobe" />
+        <TextField label="Company Name" value={d.companyName} onChange={v => set({ companyName: v })} placeholder="Acme Corp" />
         <TextField label="Website URL(s)" value={d.websiteUrls} onChange={v => set({ websiteUrls: v })} placeholder="https://example.com" />
       </div>
       <DropdownField label="Industry" value={d.industry} onChange={v => set({ industry: v })} options={INDUSTRIES} placeholder="Select industry..." />

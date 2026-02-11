@@ -50,20 +50,14 @@ export function WizardShell() {
           <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
             <Send className="w-7 h-7 text-primary" />
           </div>
-          <h1 className="text-3xl font-bold text-foreground">Discovery Complete</h1>
+          <h1 className="text-3xl font-bold text-foreground">Submission Complete</h1>
           <p className="text-muted-foreground">
-            Discovery data for <strong className="text-foreground">{formData.generalInfo.companyName || 'the client'}</strong> has been successfully captured.
-            You can now generate a PDF report with the DEPT® watermark from the Review section.
+            Discovery data for <strong className="text-foreground">{formData.generalInfo.companyName || 'the client'}</strong> has been recorded.
+            Backend integrations (Google Sheets & AI report) will be connected in a future update.
           </p>
-          <div className="flex flex-col gap-3 items-center mt-6">
-            <Button 
-              onClick={resetForm} 
-              variant="outline" 
-              className="gap-2 border-[#ff4901] text-[#ff4901] hover:bg-[#ff4901] hover:text-white transition-colors"
-            >
-              <RotateCcw className="w-4 h-4" /> Start New Discovery
-            </Button>
-          </div>
+          <Button onClick={resetForm} variant="outline" className="gap-2 border-[#ff4901] text-[#ff4901] hover:bg-[#ff4901] hover:text-white transition-colors">
+            <RotateCcw className="w-4 h-4" /> Start New Discovery
+          </Button>
         </div>
       </div>
     );
@@ -145,12 +139,10 @@ export function WizardShell() {
           </Button>
           {isReview ? (
             <Button
-              onClick={() => {
-                setIsSubmitted(true);
-              }}
+              onClick={() => { /* Handle final submission */ }}
               className="bg-[#ff4901] text-white font-bold hover:bg-[#ff4901]/90 transition-colors px-8"
             >
-              Finish Discovery <Send className="ml-2 h-4 w-4" />
+              Final Submit <Send className="ml-2 h-4 w-4" />
             </Button>
           ) : (
             <Button
